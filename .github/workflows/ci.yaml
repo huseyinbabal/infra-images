@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Detect environment
-        working-directory: container/${matrix.image}
+        working-directory: container/${{matrix.image}}
         id: projectEnv
         run: |
           RUNTIME=""
@@ -37,10 +37,10 @@ jobs:
         if: ${{ (steps.projectEnv.outputs.runtime == 'go') && (steps.projectEnv.outputs.hasTests == 'true') }}
         uses: actions/setup-go@v5
         with:
-          go-version-file: "container/${matrix.image}/go.mod"
+          go-version-file: "container/${{matrix.image}}/go.mod"
 
       - name: Run tests
-        working-directory: container/${matrix.image}
+        working-directory: container/${{matrix.image}}
         if: ${{steps.projectEnv.outputs.hasTests != 'false'}}
         run: |
           make test
