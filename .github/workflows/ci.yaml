@@ -22,8 +22,8 @@ jobs:
           if grep -q -E '^test:' Makefile; then
             HAS_TESTS="true"
           fi
-          echo "::set-output name=runtime::$RUNTIME"
-          echo "::set-output name=hasTests::$HAS_TESTS"
+          echo "runtime=$RUNTIME" >> $GITHUB_OUTPUT
+          echo "hasTests=$HAS_TESTS" >> $GITHUB_OUTPUT
 
       - name: Setup Go
         if: ${{ needs.projectEnv.outputs.runtime == 'go' && needs.projectEnv.outputs.hasTests == 'true' }}
