@@ -24,8 +24,8 @@ jobs:
           fi
           echo $RUNTIME
           echo $HAS_TESTS
-          echo "runtime=${RUNTIME}" >> $GITHUB_ENV
-          echo "hasTests=${HAS_TESTS}" >> $GITHUB_ENV
+          echo "runtime=${RUNTIME}" >> $GITHUB_OUTPUT
+          echo "hasTests=${HAS_TESTS}" >> $GITHUB_OUTPUT
       - name: Debug Outputs
         run: |
           echo "Runtime is: ${{ needs.projectEnv.outputs.runtime }}"
