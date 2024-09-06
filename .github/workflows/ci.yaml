@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup Go
         working-directory: container/monarx-events
-        if: ${{steps.projectEnv.outputs.runtime == 'go' && steps.projectEnv.outputs.hasTests == 'true'}}
+        if: ${{ needs.projectEnv.outputs.runtime == 'go' && needs.projectEnv.outputs.hasTests == 'true' }}
         uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
