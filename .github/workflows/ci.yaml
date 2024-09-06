@@ -28,16 +28,16 @@ jobs:
           echo "hasTests=${HAS_TESTS}" >> $GITHUB_OUTPUT
       - name: Debug Outputs
         run: |
-          echo "Runtime is: ${{ needs.projectEnv.outputs.runtime }}"
-          echo "Has tests: ${{ needs.projectEnv.outputs.hasTests }}"
+          echo "Runtime is: ${{ steps.projectEnv.outputs.runtime }}"
+          echo "Has tests: ${{ steps.projectEnv.outputs.hasTests }}"
       - name: Setup Go
-        if: ${{ (needs.projectEnv.outputs.runtime == 'go') && (needs.projectEnv.outputs.hasTests == 'true') }}
+        if: ${{ (steps.projectEnv.outputs.runtime == 'go') && (steps.projectEnv.outputs.hasTests == 'true') }}
         uses: actions/setup-go@v5
         with:
           go-version-file: 'container/monarx-events/go.mod'
 
       - name: Run tests
         working-directory: container/monarx-events
-        if: ${{needs.projectEnv.outputs.hasTests != 'false'}}
+        if: ${{steps.projectEnv.outputs.hasTests != 'false'}}
         run: |
           make test
