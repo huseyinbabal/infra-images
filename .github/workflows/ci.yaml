@@ -22,6 +22,8 @@ jobs:
           if grep -q -E '^test:' Makefile; then
             HAS_TESTS="true"
           fi
+          echo $RUNTIME
+          echo $HAS_TESTS
           echo "runtime=$RUNTIME" >> $GITHUB_OUTPUT
           echo "hasTests=$HAS_TESTS" >> $GITHUB_OUTPUT
 
