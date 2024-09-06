@@ -8,10 +8,13 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ['monarx-events', 'phishing-detector']
     steps:
       - uses: actions/checkout@v4
       - name: Detect environment
-        working-directory: container/monarx-events
+        working-directory: container/${matrix.image}
         id: projectEnv
         run: |
           RUNTIME=""
@@ -34,10 +37,10 @@ jobs:
         if: ${{ (steps.projectEnv.outputs.runtime == 'go') && (steps.projectEnv.outputs.hasTests == 'true') }}
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'container/monarx-events/go.mod'
+          go-version-file: "container/${matrix.image}/go.mod"
 
       - name: Run tests
-        working-directory: container/monarx-events
+        working-directory: container/${matrix.image}
         if: ${{steps.projectEnv.outputs.hasTests != 'false'}}
         run: |
           make test
