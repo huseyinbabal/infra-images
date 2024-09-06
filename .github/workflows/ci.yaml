@@ -26,9 +26,10 @@ jobs:
           echo "::set-output name=hasTests::$HAS_TESTS"
 
       - name: Setup Go
+        if: ${{ needs.projectEnv.outputs.runtime == 'go' && needs.projectEnv.outputs.hasTests == 'true' }}
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: 'container/monarx-events/go.mod'
 
       - name: Run tests
         working-directory: container/monarx-events
