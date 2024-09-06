@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect environment
+        working-directory: container/monarx-events
+        id: projectEnv
+        run: |
+          RUNTIME=""
+          HAS_TESTS="false"
+          if [ -f "go.mod" ]; then
+            RUNTIME="go"
+          fi
+          if grep -q -E '^test:' Makefile; then
+            HAS_TESTS="true"
+          fi
+          echo "::set-output name=runtime::$RUNTIME"
+          echo "::set-output name=hasTests::$HAS_TESTS"
+
+      - name: Setup Go
+        working-directory: container/monarx-events
+        if: ${{steps.projectEnv.outputs.runtime == 'go' && steps.projectEnv.outputs.hasTests == 'true'}}
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Run tests
+        working-directory: container/monarx-events
+        if: ${{needs.projectEnv.outputs.hasTests != 'false'}}
+        run: |
+          make test
